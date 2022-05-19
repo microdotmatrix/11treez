@@ -1,182 +1,141 @@
-@import 'tokens';
+// Init Sass Color Functions
+@import "toolkit/open-color",
+        "toolkit/palettes",
+        "~nord/src/sass/nord",
+        "toolkit/gradients";
 
-/**
- * SIZE SCALE
- * This is a Major Third scale that powers all the utilities that
- * it is relevant for (font-size, margin, padding). All items are
- * calcuated off these tokens.
- */
-$stalfos-size-scale: map-get($tokens, 'size-scale');
+//
+// Using Gorko to generate color theme properties based on some variable maps
+// for a primary theme (light colors) and a dark mode theme (dark colors)
+//
 
-/**
- * COLORS
- * Colors are shared between backgrounds and text by default. 
- * You can also use them to power borders, fills or shadows, for example.
- */
-$stalfos-colors: map-get($tokens, 'colors');
+$generate-utility-classes: false;
+// ^ Tell Gorko not to auto-generate utility classes, we can do that as needed
+// ------
 
-/**
- * UTIL PREFIX
- * All pre-built, framework utilities will have this prefix. 
- * Example: the wrapper utility is '.sf-wrapper' because the default
- * prefix is 'sf-'.
- */
-$stalfos-util-prefix: 'sf-';
 
-/**
- * METRICS
- * Various misc metrics to use around the site
- */
-$metrics: (
-  'wrap-max-width': 58rem,
-  'wrap-inner-max-width': 52rem,
-  'md-breakpoint': 48rem
+// Color map for "Light / Primary" color theme
+$light-colors: (
+  'primary': #1a1a1a,
+  'secondary': #f3f3f3,
+  'text': ocGray(9),
+  'body': slate(1),
+  'background': gradient(metallic-fade),
+  'heading': $nord2,
+  'subheading': slate(5),
+  'accent': $nord7,
+  'descent': $nord3,
+  'mid': slate(5),
+  'alt': ocGray(5),
+  'link': ocGray(8),
+  'link-hover': slate(6)
 );
 
-/**
- * CORE CONFIG
- * This powers everything from utility class generation to breakpoints
- * to enabling/disabling pre-built components/utilities.
- */
-$stalfos-config: (
-  'align': (
-    'items': (
-      'start': 'flex-start',
-      'center': 'center',
-      'end': 'flex-end'
-    ),
-    'output': 'responsive',
-    'property': 'align-items'
-  ),
-  'bg': (
-    'items': $stalfos-colors,
-    'output': 'standard',
-    'property': 'background'
-  ),
-  'color': (
-    'items': $stalfos-colors,
-    'output': 'standard',
-    'property': 'color'
-  ),
-  'box': (
-    'items': (
-      'block': 'block',
-      'flex': 'flex',
-      'inline-flex': 'inline-flex',
-      'hide': 'none'
-    ),
-    'output': 'responsive',
-    'property': 'display'
-  ),
-  'font': (
-    'items': map-get($tokens, 'fonts'),
-    'output': 'standard',
-    'property': 'font-family'
-  ),
-  'gap-top': (
-    'items': $stalfos-size-scale,
-    'output': 'standard',
-    'property': 'margin-top'
-  ),
-  'gap-bottom': (
-    'items': $stalfos-size-scale,
-    'output': 'standard',
-    'property': 'margin-bottom'
-  ),
-  'leading': (
-    'items': (
-      'tight': '1.2',
-      'mid': '1.5',
-      'loose': '1.7'
-    ),
-    'output': 'standard',
-    'property': 'line-height'
-  ),
-  'measure': (
-    'items': (
-      'long': '75ch',
-      'short': '60ch',
-      'compact': '40ch'
-    ),
-    'output': 'standard',
-    'property': 'max-width'
-  ),
-  'pad-top': (
-    'items': $stalfos-size-scale,
-    'output': 'standard',
-    'property': 'padding-top'
-  ),
-  'pad-bottom': (
-    'items': $stalfos-size-scale,
-    'output': 'standard',
-    'property': 'padding-bottom'
-  ),
-  'pad-left': (
-    'items': $stalfos-size-scale,
-    'output': 'standard',
-    'property': 'padding-left'
-  ),
-  'space': (
-    'items': (
-      'between': 'space-between',
-      'around': 'space-around',
-      'before': 'flex-end'
-    ),
-    'output': 'responsive',
-    'property': 'justify-content'
-  ),
-  'stack': (
-    'items': (
-      '300': 0,
-      '400': 10,
-      '500': 20,
-      '600': 30,
-      '700': 40
-    ),
-    'output': 'standard',
-    'property': 'z-index'
-  ),
-  'ta': (
-    'items': (
-      'right': 'right',
-      'left': 'left',
-      'center': 'center'
-    ),
-    'output': 'responsive',
-    'property': 'text-align'
-  ),
-  'text': (
-    'items': $stalfos-size-scale,
-    'output': 'responsive',
-    'property': 'font-size'
-  ),
-  'weight': (
-    'items': (
-      'light': '300',
-      'regular': '400',
-      'mid': '600',
-      'bold': '700'
-    ),
-    'output': 'standard',
-    'property': 'font-weight'
-  ),
-  'width': (
-    'items': (
-      'full': '100%',
-      'half': percentage(1/2),
-      'quarter': percentage(1/4),
-      'third': percentage(1/3)
-    ),
-    'output': 'responsive',
-    'property': 'width'
-  ),
-  'breakpoints': (
-    'md': #{'(min-width: ' + map-get($metrics, 'md-breakpoint') + ')'}
-  ),
-  'utilities': (
-    'reset': 'on',
-    'icon': 'off',
-    'flow': 'on',
-    'wrapper': 'off'
+// Color map for "Dark / Alternate" color theme (inverse contrast to light theme)
+$dark-colors: (
+  'primary': slate(2),
+  'secondary': #040405,
+  'text': ocGray(1),
+  'body': slate(9),
+  'background': gradient(dark-fade),
+  'heading': $nord6,
+  'subheading': $nord3,
+  'accent': $nord3,
+  'descent': $nord7,
+  'mid': slate(5),
+  'alt': ocGray(5),
+  'link': $nord7,
+  'link-hover': slate(4)
+);
+
+// Configuration to initialize Gorko to generate theme properties
+$gorko-config: (
+  'css-vars': (
+    'themes': (
+      'default': (
+        'tokens': (
+          'color': $light-colors
+        )
+      ),
+//    'dark': (
+//      'prefers-color-scheme': 'dark',
+//      'tokens': (
+//        'color': $dark-colors
+//      )
+//    ),
+      'light': (
+        'prefix': '.theme-light',
+        'tokens': (
+          'color': $light-colors
+        )
+      ),
+      'dark-toggle': (
+        'prefix': 'theme-dark',
+        'tokens': (
+          'color': $dark-colors
+        )
+      )
+    )
   )
 );
+
+// Init Gorko
+@import "~gorko/gorko";
+
+// Set breakpoints used by Gerillass breakpoint mixin
+$map-for-breakpoints: (
+  "xsmall":   32rem,   // 512px
+  "small":    48rem,   // 768px
+  "medium":   64rem,   // 1024px
+  "large":    80rem,   // 1280px
+  "xlarge":   90rem   // 1440px
+  // "2xlarge":  112.5rem // 1800px
+);
+
+// Selected custom properties from Open Props
+@import "~open-props/gradients";
+@import "~open-props/borders";
+@import "~open-props/shadows";
+
+// My own custom properties generated by Accoutrement
+@import "toolkit/fluid-sizes";
+@import "toolkit/social-colors";
+@import "toolkit/easing";
+
+$content-width:       map-get($map-for-breakpoints, xlarge);
+
+// Porting CSS custom props into Sass variables for easier typing shorthand
+$phi:                 var(--phi);
+$e:                   var(--e);
+$pi:                  var(--pi);
+$space:               var(--space-phi);
+$space-phi:           var(--space-phi);
+$space-e:             var(--space-e);
+$space-pi:            var(--space-pi);
+
+$p:                   var(--p);
+$sm:                  var(--sm);
+$md:                  var(--md);
+$lg:                  var(--lg);
+$xl:                  var(--xl);
+$xxl:                 var(--xxl);
+$xxxl:                var(--xxxl);
+$xxxxl:               var(--xxxxl);
+
+$h1:                  var(--h1);
+$h2:                  var(--h2);
+$h3:                  var(--h3);
+$h4:                  var(--h4);
+$h5:                  var(--h5);
+$h6:                  var(--h6);
+
+// Some Sass variables to call up fonts imported into "/scss/toolkit/fonts"
+$barlow:             'Barlow', sans-serif;
+$genos:              'Genos', sans-serif;
+$kanit:              'Kanit', sans-serif;
+
+$text-font:           $barlow;
+$text-line:           1.618rem;
+$text-weight:         300;
+$heading-font:        $genos;
+$heading-weight:      500;
